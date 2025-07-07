@@ -1,0 +1,585 @@
+---
+title: "2025 R Workshop"
+author: "Muji Chughtai"
+date: today
+format:
+  html:
+    theme: flatly
+    toc: true
+    toc-float:
+      collapsed: false
+      smooth-scroll: true
+---
+
+```{r setup, include = FALSE}
+# Global numeric display options
+## 1. What knitr prints from code chunks
+knitr::opts_chunk$set(digits = 5)  # 5 significant *decimal* digits
+
+## 2. Inline R expressions  (`r ...`)
+options(digits = 5)                # same rule for inline output
+
+## 3. All knitr::kable() tables
+options(
+  knitr.kable.digits       = 5,             # round to 5 decimals
+  knitr.kable.format.args  = list(nsmall = 5)
+)
+
+# Global figure display options
+knitr::opts_chunk$set(
+  fig.width  = 8,
+  fig.height = 8,
+  fig.align  = "center"
+)
+```
+
+# Basic R Functions
+
+## Arithmetic
+
+```{r}
+250 + 107
+
+9*5
+
+100/15
+
+4^3
+```
+
+## Statistics
+
+```{r}
+mean(c(15, 25, 25, 55, 75, 1000))
+
+median(c(15, 25, 25, 55, 75, 1000))
+
+sd(c(15, 25, 25, 55, 75, 1000))
+
+range(c(15, 25, 25, 55, 75, 1000))
+
+range(c(15, 25, 25, 55, 75, 1000))
+```
+
+Rather than constantly writing out, say, a list of numbers, you can use variables:
+
+## Using Variables
+
+```{r}
+example.data <- c(15, 25, 25, 55, 75, 1000)
+mean(example.data)
+```
+
+You can also use multiple variables to do more complex problems, like solving 5 versions of the same function:
+
+```{r}
+a <- c(3, 6, 9, 12, 15)
+b <- c(4, 8, 12, 16, 20)
+c <- sqrt(a^2 + b^2); c
+```
+
+R also has statistical functions that you can use to simulate and plot data. The following code simulates data from a normal distribution with the mean and standard deviation for GRE scores. You can then plot this distribution and even add a line to where your score (or desired score) is.
+
+```{r}
+# simulating normal data with mean 150 and sd 8.6
+gre.dist <- rnorm(n = 10000, mean = 150, sd = 8.6)
+
+# looking at the first few values
+head(gre.dist)
+
+# plotting a histogram of the data with 30 breaks and a red line at a score of 160
+hist(gre.dist, breaks = 30)
+abline(v = 160, col = "red")
+```
+
+Doing basic arithmetic and simulating data is wonderful, but you often will have collected data already and will want to use R for visualizing and analyzing data. We will now focus on using R to make visual and statistical insights from real data. Namely, data on some of the "best" films since 2000:
+
+# New York Times' Best Films Since 2000
+
+On June 23, 2025, the New York Times released their [list](https://www.nytimes.com/interactive/2025/movies/best-movies-21st-century.html) of the 100 best films since 2000. To do so, they polled over 500 influential directors, actors, and other members of the film industry and collated their responses into a list. I, along with my labmates Yamini Pant and Debbie Lim, created a dataset with their top 100 films along with the directors, genres, studios, ratings, and earnings for each of the films. Our task is to use this data to answer some interesting questions about the state of Hollywood since the turn of the century.
+
+Let's load in the data and the required packages we need to do so (the data is available on this project's Github Repository at <https://github.com/mujtabachughtai/2025-R-Workshop>):
+
+## Load in Required Packages and Data
+
+```{r, message = FALSE}
+# load in the best package for data cleaning, organizing, and visualization
+library(tidyverse)
+
+# load in package for nice colors palettes for figures
+library(viridis)
+
+# load in package for easy descriptive statistics
+library(psych)
+
+# load in package for creating correlation plots for multiple variables at once
+library(GGally)
+
+# load in package for comparing the marginal means of different levels of a variable
+library(emmeans)
+
+# load in package for creating interactive plots
+library(plotly)
+
+# load in dataset created for this project by me and my labmates
+# set it to a new variable; make sure the csv is loaded in your directory
+films_data <- read.csv("NYT_Top100_Films.csv")
+```
+
+## Get a Feel for the Data
+
+Let's take a look at the first few rows of the dataset to see the variables we are working with and how the data is structured within the dataset:
+
+```{r}
+# look at the first few rows of the dataframe
+# the knitr::kable function will allow the table to look clean in our html
+# the head function grabs the first five rows
+knitr::kable(head(films_data))
+```
+
+Great! Looks like the "best" movie from the past 25 years was Bong Joon Ho's Parasite. For each move, we have it's ranking from NYT, as well as it's ratings from other sites like Rotten Tomatoes, IMDB, and Metacritic. We also have the amount of money each movie made.
+
+Interestingly, the "best" movies from the NYT have lower rankings (i.e., 1, 2), while the best movies from the other rating metrics have high scores (100 or 10.0). Perhaps we should create a new variable where we reverse score the NYT ranking to better match the orders from the other rating metrics. We will use functions from the `tidyverse` package that we loaded in earlier:
+
+```{r}
+# go into the films_data dataframe and add a new variable called ranking_reversed
+# this is 101 minus the original NYT ratings
+films_data_clean <- films_data %>%
+  mutate(Ranking_Reversed = 101 - Ranking)
+
+# take a look at the first few rows of the new data frame
+knitr::kable(head(films_data_clean))
+```
+
+Looks like it worked, but why don't we move the newly create column so it is at the beginning of the data frame like the other ranking. We don't need to create a new data frame, but rather just update `films_data_clean`:
+
+```{r}
+# update data frame
+films_data_clean <- films_data_clean %>%
+  relocate(Ranking_Reversed, .after = Ranking)
+
+# take a look at the first few rows of the new data frame
+knitr::kable(head(films_data_clean))
+```
+
+Nice! Now we can start taking a look at our data and comparing different variables within our data frame.
+
+## Descriptive Statistics and Plots
+
+Let's take a look and see which years were the best for films. First, we can simply count the number of films on this list that were from each year and make a table of the results:
+
+### Films from each Year
+
+```{r}
+# go into the dataframe and count the number of films per movie and call this 'count'
+knitr::kable(
+  films_data_clean %>%
+    group_by(Year) %>%
+    summarise(Count = n()
+            )
+  )
+```
+
+It looks like there are a few films per year on this list, and this table doesn't tell us anything too insightful. Although it is interesting to see that there are no films from 2021 or 2021. This was probably due to the COVID-19 pandemic preventing the release of lots of films during this time period. Why don't we create a similar table but for the genres of the films?
+
+### Films by Genre
+
+```{r}
+# same as above, but now group by Genre
+knitr::kable(
+  films_data_clean %>%
+    group_by(Genre) %>% # note the change
+    summarise(Count = n()
+            )
+  )
+```
+
+This is really interesting! Let's recreate the table in descending order (so the genre with the most films on the list is at the top), and let's create a pie chart that shows the number of films from each genre on the list.
+
+```{r}
+# same as above, but now group in descending order, and we save ordered list
+# as 'count_genre'
+count_genre <- films_data_clean %>%
+  group_by(Genre) %>%
+  summarise(Count = n()) %>%
+  arrange(desc(Count)) # note the addition
+
+# show table in order
+knitr::kable(count_genre)
+
+# create pie chart
+## reorder the Genre variable so it is in the same order as the above table
+films_data_clean$Genre <- factor(films_data_clean$Genre, levels = count_genre$Genre)
+
+films_data_clean %>%
+  count(Genre) %>% # this is a shorthand version of what we did in the above table
+  ggplot(aes(x = "", y = n, fill = Genre)) +
+  geom_col(color = "black") +
+  coord_polar(theta = "y") + # converts stacked bar graph into pie chart +
+  scale_fill_viridis_d(option = "C", begin = 0, end = 0.8) + # use nice color-blind friendly palette
+  geom_text(aes(label = n), color = "white", position = position_stack(vjust = 0.5)) +
+  labs(title = "Number of Films from each Genre",
+       subtitle = "From NYT Best 100 Movies Since 2000") +
+  theme_void() +
+  theme(
+    plot.title = element_text(face = "bold"),
+    legend.position = "right"
+  )
+```
+
+Wonderful! This sort of plot is a professional and simple way to summarize this data, and is a great reference to thinking about the 'best' genre from 2000 to 2025. However, we can dive deeper than just counting the number of films from each genre, as we also have data on the ratings from three sites for each film as well as how much each film made. Let's now take a look at the distributions of those four variables, as knowing the underlying distributions of your variables is important before running statistical tests.
+
+### Distributions of Ratings and Earnings Variables
+
+Before plotting the distributions of our four variables, let's get descriptive statistics from each using the `describe` function from the `psych` package that we loaded in earlier:
+
+```{r}
+# rotten tomatoes score
+describe(films_data_clean$RottenTomatoes)
+
+# IMDB score
+describe(films_data_clean$IMDB)
+
+# Metacritic score
+describe(films_data_clean$Metacritic)
+
+# Earnings
+describe(films_data_clean$WorldwideGross)
+```
+
+Alright, this gave us some important information, but it can often be difficult to understand the underlying distribution of data from just statistics. Let's create density plots for each to get a better idea of what is going on. These will show the concentration of data at different values of our variables.
+
+```{r}
+# Rotten Tomatoes
+films_data_clean %>%
+  ggplot(aes(x = RottenTomatoes)) +
+  geom_density(fill = "#CC4678") + theme_minimal() +
+  labs(title = "Rotten Tomatoes Scores",
+       subtitle = "From NYT Best 100 Movies Since 2000",
+         x = "Rotten Tomatoes Score") +
+  theme(plot.title = element_text(face = "bold"))
+```
+
+```{r}
+# IMDB
+films_data_clean %>%
+  ggplot(aes(x = IMDB)) +
+  geom_density(fill = "#CC4678") + theme_minimal() +
+  labs(title = "IMDB Scores",
+       subtitle = "From NYT Best 100 Movies Since 2000",
+         x = "IMDB Score") +
+  theme(plot.title = element_text(face = "bold"))
+```
+
+```{r}
+# Metacritic
+films_data_clean %>%
+  ggplot(aes(x = Metacritic)) +
+  geom_density(fill = "#CC4678") + theme_minimal() +
+  labs(title = "Metacritic Scores",
+       subtitle = "From NYT Best 100 Movies Since 2000",
+         x = "Metacritic Score") +
+  theme(plot.title = element_text(face = "bold"))
+```
+
+```{r}
+# Worldwide Earnings
+films_data_clean %>%
+  ggplot(aes(x = WorldwideGross)) +
+  geom_density(fill = "#CC4678") + theme_minimal() +
+  labs(title = "Worldwide Earnings",
+       subtitle = "From NYT Best 100 Movies Since 2000",
+         x = "Worldwide Earnings") +
+  theme(plot.title = element_text(face = "bold"))
+```
+
+Great! It looks like the Rotten Tomatoes scores have quite a bit of a negative skew, with a lot of the scores concentrated at around 95. IMDB scores seem to be quite normally distributed, centered around 7.8. Metacritic scores have a slight negative skew, somewhat centered at around 90. Lastly, the worldwide earnings are very positively skewed, and there seems to be quite a range of earnings across films. This makes sense given that, over the past 25 years, the cost of going to the movies has dramatically increased, so some films (like action films from recent years) often reach billions of dollars in revenue, while films from the early 2000s were often only making a few millions of dollars. We should keep this in mind for future analyses.
+
+Given the nice distribution of IMDB scores, let's use this metric to do one last set of descriptive statistics and plots to try and determine the best director from the past 25 years.
+
+### Top Directors by IMDB Score
+
+We can use the `group_by` and `summarise` functions that we used before to count the number of times each director appears on this list. However, we can also calculate the average IMDB score (and average for any other variable) for each director as well. Let's do this now and take a look at the directors with the top average IMDB score:
+
+```{r}
+knitr::kable(
+  head( # look at only the first few
+  films_data_clean %>%
+    group_by(Director) %>%
+    summarise(
+      Average_IMDB = mean(IMDB), # calculate the average IMDB score for each director
+      Count = n() # calculate the number of times the director was on the list
+      # and the number of values in the mean function for their IMDB averag
+            ) %>%
+    arrange(desc(Average_IMDB)) # arrange from highest to lowest IMDB score
+  )
+  )
+```
+
+Nice! It looks like Peter Jackson has the highest average IMDB score of any director on this list with an 8.9. However, he only has one film on this list (Lord of the Rings: the Fellowship of the Ring). Would it make sense to crown him the best director of the past 25 years? Maybe. But perhaps we want to calculate the average IMDB scores only for directors who appear on this list a few times. It seems like many of the directors on this list are on here for only one of their films, so why don't we include only those who have at least 2 films on this list:
+
+```{r}
+knitr::kable(
+  films_data_clean %>%
+    group_by(Director) %>%
+    summarise(
+      Average_IMDB = mean(IMDB), # same as before
+      Count = n() # same as before
+            ) %>%
+    filter(Count > 1) %>% # retain only those with at least 2 films on the list
+    arrange(desc(Average_IMDB)) # same as before
+  )
+```
+
+Sweet! Now we have the 13 directors with multiple films on this list, ordered by their average IMDB scores. For fun, why don't we add in the average scores for the other rating metrics and for the earnings of the films. That way we have one concise table to tell us exactly who the "best" director of the past 25 years was:
+
+```{r}
+knitr::kable(films_data_clean %>%
+    group_by(Director) %>%
+    summarise(
+      Average_IMDB = mean(IMDB), # same as before
+      Average_RT = mean(RottenTomatoes), # average rotten tomatoes score
+      Average_MC = mean(Metacritic), # average metacritic score
+      Average_earnings = mean(WorldwideGross), # average earnings
+      Count = n() # same as before
+            ) %>%
+    filter(Count > 1) %>% # retain only those with at least 2 films on the list
+    arrange(desc(Average_IMDB)) # still ordring by IMDB, but we could do any of the created metrics
+)
+```
+
+Wonderful! From this table of directors that had multiple films on NYT's list, we have a few options of who to crown as the "best" director of the last 25 years. Christopher Nolan has the most films of anyone on the full list with 5, and he also has the highest average IMDB score and the highest average earnings of any director with multiple films on the list. Bong Joon Ho has the highest average Rotten Tomatoes score of any director with multiple films on this list with 97, and Richard Linklater has the highest Metacritic score of any director with multiple films on this list with 95.5. So, I think any of these directors could reasonably be crowned the best director of the past 25 years!
+
+Of course, a formal statistical test (such as an ANOVA) would be best to compare the directors on these metrics (inferential statistics like this are the topic of the next section), but given the small number of observations per director, it may not be appropriate for this question. Instead, let's finish this section by plotting the mean and standard deviations for each of the above 13 director's IMDB scores (sorted in descending order, of course).
+
+```{r}
+# make a summary table like before but only with mean and sd for IMDB and count
+top_directors_IMDB <- films_data_clean %>% 
+  group_by(Director) %>% 
+  summarise(
+    Mean_IMDB = mean(IMDB),
+    SD_IMDB   = sd(IMDB),
+    Count = n() 
+            ) %>%
+    filter(Count > 1) %>%
+    arrange(desc(Mean_IMDB))
+
+# use this summary table to plot the means and sds
+ggplot(top_directors_IMDB,
+       aes(y = reorder(Director, Mean_IMDB), # reorder puts the highest at top
+           x = Mean_IMDB)) +
+  geom_pointrange(                           # create lines for mean ± 1 SD
+    aes(xmin = Mean_IMDB - SD_IMDB,
+        xmax = Mean_IMDB + SD_IMDB,
+        color = reorder(Director, Mean_IMDB)), # make each director a different color
+    fatten = 2,
+    linewidth = 0.7,
+    show.legend = FALSE
+  ) +
+  scale_color_viridis_d(option = "C") + # use nice color-blind friendly palette
+  labs(
+    x = "Average IMDB Rating with Standard Deviation Error Bars",
+    y = NULL,
+    title    = "Average IMDB Scores for Directors with Multiple Films",
+    subtitle = "From NYT Best Films Since 2000",
+  ) +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold"))
+```
+
+## Inferential Statistics
+
+Great. Now that we have a thorough understanding of the data and some descriptive statistics and plots to help us answer questions about it, we can move towards using formal statistics tests. The first test that comes to mind is to see if films that score well on one metric (such as Rotten Tomatoes score) tend to score well on other metrics (NYT Ranking, IMDB, Metacritic, and earnings). To test this, we will calculate the pairwise correlations between these variables.
+
+### Correlations Between Metrics
+
+Given that the distributions of the four metrics are non-normal (except for IMDB), we should use the non-parametric Spearman's correlation test. In R, testing the correlation is quite simple, and it only takes one line of code:
+
+```{r, warning = FALSE}
+# correlation between Rotten Tomatoes and IMDB score
+cor.test(films_data_clean$RottenTomatoes, films_data_clean$IMDB, method = "spearman")
+```
+
+Interestingly, the correlation between a film's Rotten Tomatoes score and IMDB score is not significant (p = 0.078), but it is in the hypothesized direction. Let's calculate all of the pairwise correlations for our five metrics. Rather than doing all 10 correlations with 10 different lines of code, there is a nice function from the `GGally` package that allows us to do all correlations and plot them with just a few lines of code:
+
+```{r, warning = FALSE}
+ggpairs(
+  films_data_clean[c("Ranking_Reversed", "RottenTomatoes", "IMDB",
+                     "Metacritic", "WorldwideGross")],   # select our 5 metrics
+  upper = list(continuous = wrap("cor", method = "spearman")), # Spearman rho in upper triangle
+  lower = list(continuous = wrap("points", alpha = 0.6, size = 1)) # scatter plot in lower triangle
+)
+```
+
+Wonderful! This is a very informative plot. The numbers in the upper triangle indicate the Pearson's rho value for each pairwise comparison, with a dot after indicating the relationship is marginally significant (p \< 0.10, like the comparison between IMDB and Rotten Tomatoes that we now see again), a star after indicating the relationship is significant at the 0.05 level (the standard level in psychology), and 3 stars after indicating the relationship is significant at the 0.01 level.
+
+It looks like the strongest positive relationship is between Rotten Tomatoes and Metacritic scores (perhaps because they are calculated similarly). The other highly significant relationship is between IMDB score and how much money a film makes. Interestingly, the earnings for a film is negatively correlated with the other website ratings, although they do not reach statistical significance. Lastly, there is a significant relationship with IMDB score and NYT Ranking (reversed from earlier), such that higher ranked films on NYT's list tend to have higher IMDB scores. However, given that the NYT ranking is a pure list with exactly one film at each value of 1 to 100, it may not make sense to do a correlation test with that metric. If you take a look at the distribution of the NYT rankings, it looks uniform across the range of values, very different than the distributions of the other variables (which match what we plotted before). Regardless, this plot tells us quite a bit about how the metrics relate to one another!
+
+### Average IMDB Score by Genre
+
+We've counted the number of films on the list from each genre, and we've compared the average IMDB scores across directors. Why don't we combine these methods and compare the average IMDB scores across genres with a formal statistical test. From our first plot, we know that there are a decent amount of observations per genre, so a linear model should be able to tell us if certain genres are significantly different from another in their IMDB scores.
+
+First, let's create a summary table with the average IMDB score for each genre in descending order. We'll add the SDs number of observations again, too, and we'll save it so we can use the order for our plot later.
+
+```{r}
+genre_imdb <- films_data_clean %>%
+  group_by(Genre) %>%
+  summarise(
+    Average_IMDB = mean(IMDB),
+    SD_IMDB = sd(IMDB),
+    Count = n()
+  ) %>%
+  arrange(desc(Average_IMDB))
+
+knitr::kable(genre_imdb)
+```
+
+Interestingly, the genres with the most entries on the list actually have the lowest average IMDB scores. In contrast, some of the genres with the lowest amount of entries on the list have the highest average IMDB scores. Let's plot these results to further get a hold of the trends. Since we're using all 100 films from our dataset, we won't have to create a new data frame to plot from, instead using `stat_summary` with the full data frame.
+
+```{r}
+# set order of genres from full data to the reverse of the order from the table above
+# this makes for easier plotting and model interpretation
+films_data_clean$Genre <- factor(films_data_clean$Genre, levels = rev(genre_imdb$Genre))
+
+# plot means and sds of IMDB scores by genre
+films_data_clean %>%
+  ggplot(aes(y = Genre, x = IMDB, color = Genre)) +
+  stat_summary(
+    fun = mean, # plot point at the mean
+    fun.min = function(x) mean(x) - sd(x), # add upper limit to line at mean + SD
+    fun.max = function(x) mean(x) + sd(x), # add upper limit to line at mean - SD
+    geom = "pointrange",
+    linewidth = 0.7,
+    show.legend = FALSE
+  ) +
+  scale_color_viridis_d(option = "C") +
+  labs(
+    x = "Average IMDB Rating with Standard Deviation Error Bars",
+    y = NULL,
+    title = "Average IMDB Scores by Genre",
+    subtitle = "From NYT Best Films Since 2000"
+  ) +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold"))
+```
+
+Nice! It looks like there are some differences between genres in the means, but the error bars definitely seem to overlap quite a bit. Let's see if the differences are significant using a linear model. This will compare the mean IMDB scores of each genre to the reference level of "Comedy", since we made that our first level in our data frame based on our summary table.
+
+```{r}
+# fit a linear model that predicts IMDB rating by Genre
+IMDB_genre_model <- lm(IMDB ~ Genre, data = films_data_clean)
+summary(IMDB_genre_model)
+```
+
+Lovely. From this output, we can see that the intercept is 7.57, which is just the mean IMDB score for the reference level of "Comedy" (which we already knew from the summary table). Each estimate refers to the difference between that genre's average IMDB score and the average for "Comedy". The p-values for each estimate indicate if that difference is significant, and it looks like a few are! Specifically, we have evidence that the average IMDB scores for Adventure, Family, Action, and Thriller films are all significantly higher than the average IMDB score for Comedy films. All of the comparisons from the above model are with respect to Comedy. What if we want to see if there are differences between, say, Adventure films and Romance films? We can use post-hoc analyses with the above ANOVA model to check all pairwise comparisons using functions from the `emmeans` package.
+
+```{r}
+# calculate pairwise comparisons for all genres
+imdb_genre_emm <- emmeans(IMDB_genre_model, ~ Genre)
+
+# display results with p values
+pairs(imdb_genre_emm)
+```
+
+Nice! Now we can see which Genres have significant differences in their average IMDB ratings. The estimates for the contrasts that have the Comedy variable all match our estimates from our original linear model, since Comedy was our reference variable in that model. However, something interesting happens when we look at the "Comedy - Family" contrast from the pairwise comparisons. Despite having the exact same estimate from the original linear model (i.e., the same difference in means), the estimate is significant in the original model but the pairwise comparison is not. This is because post-hoc comparisons have to adjust for the number of comparisons, which R automatically does, so the pairwise comparison is more conservative than the estimate from the original linear model. This is a bit in the weeds, but the difference between models for this comparison should warrant some caution when saying "Family films have higher average IMDB scores than Comedy films".
+
+The pairwise comparisons also allow us to to see comparisons between genres that aren't "Comedy". The only significant result from the other pairwise comparisons is that "Adventure" films have significantly higher average IMDB scores than "Drama" ones.
+
+## What Do I Watch, and How Do I Watch It?
+
+Let's end this project by making a plot that can help us decide what movie to watch and the streaming service to watch it on. To do so, let first create a scatterplot with all 100 films, and let's have this plot show the genre, year, and IMDB score for each film. Then, we can have it be interactive so that when you hover over a given point, you see the name of the film and the streaming service it is on. That way, someone could quickly take a look at this plot and get inspiration on what to watch next.
+
+How do we get the streaming services? The one variable from this dataset that we haven't used is `Studio`, and common film studios often have agreements with certain streaming companies. For example, Universal Studios often puts their films on Peacock, and Warner Bros. often puts their films on Max. Let's use this knowledge to create a new variable with streaming service information based on our current `Studio` variable. We'll do this using a more powerful version of an `if_else` statement called a `case_when`:
+
+```{r}
+# create a new data frame with streaming services based on the Studio variable
+## note these may not be completely accurate, as streaming service agreements
+## change often!
+films_data_clean_stream <- films_data_clean %>%
+  mutate(Streaming_Service = case_when(
+    # See if a Studio is equal to a certain string, and if so, assign a value
+    # to the Streaming_Service variable
+    Studio == "A24" ~ "Max",
+    Studio == "CBS" ~ "Paramount+",
+    Studio == "Disney" ~ "Disney+",
+    Studio == "DreamWorks" ~ "Paramount+",
+    Studio == "Fox" ~ "Hulu",
+    Studio == "Ghibli" ~ "Max",
+    Studio == "New Line" ~ "Max",
+    Studio == "Netflix" ~ "Netflix",
+    Studio == "Paramount" ~ "Paramount+",
+    Studio == "Universal" ~ "Peacock",
+    Studio == "Warner Bros." ~ "Max",
+    TRUE ~ "Other"  # fallback option
+    ))
+```
+
+```{r}
+# build the ggplot with a `text` aesthetic that will show the film's title
+# and streamig service when you hover over it
+p <- films_data_clean_stream %>% 
+  ggplot(aes(x = Year, y = IMDB, color = Genre, text =
+               paste0("Title: ", Title, "\nStreaming: ", Streaming_Service))) +
+  geom_point(size = 2, alpha = 0.85) +
+  scale_color_viridis_d(option = "C") +
+  labs(
+    x = NULL,
+    y = "IMDB Rating",
+    title = "IMDB Ratings by Year and Genre",
+  ) +
+  scale_x_continuous(breaks = 2000:2024) + 
+  theme_minimal() +
+  theme(plot.title  = element_text(face = "bold"),
+    axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1) # tilt labels
+  )
+
+# convert to an interactive plotly object and add back subtitle and put legend on bottom
+## plotly doesn't take the subtitle and legend options from the ggplot, so we do it here
+ggplotly(p, tooltip = "text") %>% 
+  layout(annotations = list(
+    x = 0, # left-aligned subtitle
+    y = 1.02, # a bit above the panel
+    xref = "paper", yref = "paper",
+    text  = "From NYT Best Films Since 2000",
+    showarrow = FALSE,
+    font = list(size = 12)
+    ),
+    legend = list(orientation = "h",   # make legend horizontal
+                  xanchor = "center",
+                  x = 0.5,   # centered left–right
+                  y = -0.15  # a bit below the plot area
+                  )
+    )
+```
+
+Wonderful! Now, if we have a genre or range of years in mind for a film to watch, we can consult this plot and look at the IMDB ratings, titles, and streaming services to choose what to watch next.
+
+# Summary of Exercises
+
+In this workshop, we used R
+
+1.  as a basic calculator
+
+2.  to create variables to do multiple iterations of the same computation
+
+3.  to simulate and plot data from an underlying distribution
+
+4.  to load in packages and data
+
+5.  to create new variables based on numeric data from other variables from our film dataset
+
+6.  to plot the number of observations for different levels of variables from our film dataset
+
+7.  to calculate summary statistics for variables from our film dataset and to plot their distributions
+
+8.  to create summary tables for different levels of our grouping variables from our film dataset
+
+9.  to plot summaries of data subsets from our film dataset
+
+10. to calculate inferential statistics like correlations and linear models for our film dataset
+
+11. to plot scatterplots and means for our full film dataset
+
+12. to create new variables based on text data from other variables from our film dataset
+
+13. to create an interactive plot that easily displays data from 5 key variables from our film dataset

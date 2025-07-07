@@ -1,0 +1,101 @@
+Ranking,Title,Director,Year,Studio,Genre,IMDB,RottenTomatoes,Metacritic,WorldwideGross
+5,Moonlight,Barry Jenkins,2016,A24,Romance,7.40,98.00,99.00,65172611
+12,The Zone of Interest,Jonathan Glazer,2024,A24,Drama,7.30,93.00,92.00,52693374
+39,Lady Bird,Greta Gerwig,2017,A24,Comedy,7.40,99.00,93.00,78987280
+58,Uncut Gems,Benny and Josh Safdie,2019,A24,Drama,7.40,81.00,93.00,50023780
+69,Under the Skin,Jonathan Glazer,2014,A24,Thriller,6.30,83.00,83.00,7494387
+74,The Florida Project,Sean Baker,2017,A24,Drama,7.60,96.00,92.00,10876639
+77,Everything Everywhere All at Once,Daniel Scheinert and Daniel Kwan,2022,A24,Action,7.80,94.00,81.00,143412671
+78,Aftersun,Charlotte Wells,2022,A24,Drama,7.60,95.00,95.00,8600158
+86,Past Lives,Celine Song,2023,A24,Romance,7.80,95.00,94.00,42681202
+83,Inside Llewyn Davis,Ethan and Joel Coen,2013,CBS,Drama,7.40,92.00,93.00,33046378
+21,The Royal Tenenbaums,Wes Anderson,2001,Disney,Comedy,7.60,81.00,76.00,71446091
+34,Wall-E,Andrew Stanton,2008,Disney,Family,8.40,95.00,95.00,527403656
+50,Up,Pete Docter,2009,Disney,Family,8.30,98.00,88.00,735103954
+73,Ratatouille,Brad Bird,2007,Disney,Family,8.10,96.00,96.00,623730087
+76,"O Brother, Where Art Thou",Ethan and Joel Coen,2000,Disney,Adventure,7.70,78.00,69.00,71877090
+96,Black Panther,Ryan Coogler,2018,Disney,Action,7.30,96.00,88.00,1349926083
+82,The Act of Killing,Joshua Oppenheimer,2013,Drafthouse,Documentary,8.20,96.00,92.00,726324
+47,Almost Famous,Cameron Crowe,2000,DreamWorks,Comedy,7.90,91.00,90.00,47387566
+85,Anchorman: The Legend of Ron Burgundy,Adam McKay,2004,DreamWorks,Comedy,7.10,66.00,63.00,90710804
+92,Gladiator,Ridley Scott,2000,DreamWorks,Action,8.50,80.00,67.00,465516248
+7,Eternal Sunshine of the Spotless Mind,Michel Gondry,2004,Focus,Romance,8.30,92.00,89.00,73362029
+17,Brokeback Mountain,Ang Lee,2005,Focus,Romance,7.70,88.00,87.00,179137137
+25,Phantom Thread,Paul Thomas Anderson,2017,Focus,Romance,7.40,91.00,90.00,52204454
+30,Lost in Translation,Sofia Coppola,2003,Focus,Romance,7.70,95.00,91.00,118688756
+36,A Serious Man,Ethan and Joel Coen,2009,Focus,Comedy,7.00,89.00,88.00,31431652
+67,Tár,Todd Field,2022,Focus,Drama,7.40,91.00,93.00,29177163
+22,The Grand Budapest Hotel,Wes Anderson,2014,Fox,Comedy,8.10,92.00,88.00,174567384
+51,12 Years a Slave,Steve McQueen,2013,Fox,Drama,8.10,95.00,96.00,187734091
+52,The Favourite,Yorgos Lanthimos,2018,Fox,Comedy,7.50,93.00,91.00,95918706
+53,Borat,Larry Charles,2006,Fox,Comedy,7.40,90.00,89.00,262552893
+63,Little Miss Sunshine,Valerie Faris and Jonathon Dayton,2006,Fox,Comedy,7.80,91.00,80.00,101059571
+64,Gone Girl,David Fincher,2014,Fox,Thriller,8.10,88.00,79.00,370890259
+79,The Tree of Life,Terrence Malick,2011,Fox,Drama,6.80,85.00,85.00,58386787
+81,Black Swan,Darren Aronofsky,2010,Fox,Horror,8.00,85.00,79.00,329398046
+94,Minority Report,Steven Spielberg,2002,Fox,Action,7.60,89.00,80.00,358372926
+9,Spirited Away,Hayao Miyazaki,2002,Ghibli,Adventure,8.60,96.00,96.00,359591806
+18,Y Tu Mamá También,Alfonso Cuarón,2002,IFC,Comedy,7.70,90.00,89.00,33616692
+23,Boyhood,Richard Linklater,2014,IFC,Drama,7.90,97.00,100.00,48137666
+90,Frances Ha,Noah Baumbach,2013,IFC,Comedy,7.40,92.00,82.00,8975688
+91,Fish Tank,Andrea Arnold,2010,IFC,Drama,7.30,91.00,81.00,2404300
+98,Grizzly Man,Werner Herzog,2005,Lionsgate,Drama,7.80,93.00,87.00,4065006
+70,Let the Right One In,Thomas Alfredson,2008,Magnolia,Horror,7.80,98.00,82.00,11227336
+84,Melancholia,Lars von Trier,2011,Magnolia,Drama,7.10,80.00,81.00,17683518
+6,No Country for Old Men,Ethan and Joel Coen,2007,Miramax,Thriller,8.20,93.00,92.00,171627166
+15,City of God,Fernando Meirelles and Kátia Lund,2002,Miramax,Drama,8.60,91.00,79.00,30681033
+41,Amélie,Jean-Pierre Jeunet,2002,Miramax,Comedy,8.30,90.00,70.00,175183052
+61,Kill Bill: Vol 1,Quentin Tarantino,2003,Miramax,Action,8.20,85.00,69.00,180908413
+1,Parasite,Bong Joon Ho,2019,Neon,Thriller,8.50,99.00,97.00,258129037
+26,Anatomy of a Fall,Justine Triet,2023,Neon,Thriller,7.60,96.00,86.00,36051506
+38,Portrait of a Lady on Fire,Céline Sciamma,2019,Neon,Romance,8.00,97.00,95.00,9869497
+95,The Worst Person in the World,Joachim Trier,2022,Neon,Comedy,7.70,96.00,91.00,12687507
+46,Roma,Alfonso Cuarón,2018,Netflix,Drama,7.60,96.00,96.00,1140769
+87,The Lord of the Rings: Fellowship of the Ring,Peter Jackson,2001,New Line,Adventure,8.90,92.00,92.00,888483037
+62,Memento,Christopher Nolan,2001,Newmarket,Thriller,8.40,94.00,83.00,40060108
+66,Spotlight,Tom McCarthy,2015,Open Road,Thriller,8.10,97.00,93.00,98690254
+99,Memories of Murder,Bong Joon Ho,2003,Palm,Thriller,8.10,95.00,82.00,1210568
+3,There will be Blood,Paul Thomas Anderson,2007,Paramount,Thriller,8.20,91.00,93.00,76430381
+19,Zodiac,David Fincher,2007,Paramount,Thriller,7.70,90.00,79.00,84786496
+20,Once Upon a Time… In Hollywood,Martin Scorsese,2013,Paramount,Comedy,8.20,79.00,74.00,407039432
+29,Arrival,Denis Villenueve,2016,Paramount,Thriller,7.90,94.00,81.00,212758656
+89,Interstellar,Christopher Nolan,2014,Paramount,Adventure,8.70,73.00,74.00,758690230
+54,Pan's Labyrinth,Guillermo del Toro,2006,Picturehouse,Drama,8.20,95.00,98.00,83863565
+56,Punch-Drunk Love,Paul Thomas Anderson,2002,Revolution,Comedy,7.30,79.00,78.00,24679535
+10,The Social Network,David Fincher,2010,Sony,Drama,7.80,96.00,95.00,224920315
+16,"Crouching Tiger, Hidden Dragon",Ang Lee,2000,Sony,Action,7.90,98.00,94.00,213978518
+27,Adaptation,Spike Jonze,2002,Sony,Comedy,7.70,90.00,83.00,32802440
+33,A Separation,Asghar Farhadi,2011,Sony,Thriller,8.30,99.00,95.00,22926076
+35,A Prophet,Jacques Audiard,2010,Sony,Drama,7.80,96.00,90.00,17873691
+37,Call Me by Your Name,Luca Guadagnino,2018,Sony,Romance,7.80,95.00,94.00,67485643
+44,Once Upon a Time… In Holleywood,Quentin Tarantino,2019,Sony,Comedy,7.60,86.00,84.00,392105159
+45,Moneyball,Bennett Miller,2011,Sony,Thriller,7.60,94.00,87.00,110206216
+48,The Lives of Others,Florian Henckel von Donnersmarck,2007,Sony,Thriller,8.40,92.00,89.00,77672685
+59,Toni Erdmann,Maren Ade,2016,Sony,Comedy,7.30,93.00,93.00,12002864
+60,Whiplash,Damien Chazelle,2014,Sony,Drama,8.50,94.00,89.00,50360880
+75,Amour,Michael Haneke,2012,Sony,Drama,7.90,93.00,95.00,29664140
+80,Volver,Pedro Almodóvar,2006,Sony,Comedy,7.60,91.00,84.00,85605851
+100,Superbad,Greg Mottola,2007,Sony,Comedy,7.60,88.00,76.00,170812834
+68,The Hurt Locker,Kathryn Bigelow,2009,Summit,Action,7.50,96.00,95.00,49259766
+43,Oldboy,Park Chan-wook,2003,Tartan,Thriller,8.30,82.00,78.00,17617021
+42,The Master,Paul Thomas Anderson,2012,The Weinstein Company,Drama,7.10,85.00,86.00,28689359
+72,Carol,Todd Haynes,2015,The Weinstein Company,Romance,7.30,94.00,94.00,44375432
+2,Mulholland Drive,David Lynch,2001,Universal,Thriller,7.90,84.00,87.00,20391793
+8,Get Out,Jordan Peele,2017,Universal,Horror,7.80,98.00,85.00,255407969
+13,Children of Men,Alfonso Cuarón,2006,Universal,Thriller,7.90,92.00,84.00,70598774
+14,Inglourious Basterds,Quentin Tarantino,2009,Universal,Action,8.40,89.00,69.00,321460744
+32,Bridesmaids,Paul Feig,2011,Universal,Comedy,6.80,89.00,75.00,324840797
+65,Oppenheimer,Christopher Nolan,2023,Universal,Thriller,8.30,93.00,90.00,975811333
+4,In the Mood for Love,Wong Kar-wai,2001,USA,Romance,8.10,92.00,87.00,15862505
+97,Gravity,Alfonso Cuarón,2013,Warner Bros.,Drama,7.70,96.00,96.00,723753370
+11,Mad Max: Fury Road,George Miller,2015,Warner Bros.,Action,8.10,97.00,90.00,380437267
+24,Her,Spike Jonze,2013,Warner Bros.,Romance,8.00,95.00,91.00,48274727
+28,The Dark Knight,Christopher Nolan,2008,Warner Bros.,Action,9.00,94.00,85.00,1009057329
+31,The Departed,Martin Scorsese,2005,Warner Bros.,Thriller,8.50,91.00,85.00,291481358
+55,Inception,Christopher Nolan,2010,Warner Bros.,Action,8.80,87.00,74.00,839381898
+57,Best in Show,Christopher Guest,2000,Warner Bros.,Comedy,7.50,93.00,78.00,20789556
+71,Ocean's Eleven,Steven Soderbergh,2001,Warner Bros.,Comedy,7.70,83.00,74.00,450717150
+93,Michael Clayton,Tony Gilroy,2007,Warner Bros.,Thriller,7.20,90.00,82.00,92991835
+49,Before Sunset,Richard Linklater,2004,Warner Independent Pictures,Romance,8.10,94.00,91.00,16506532
+40,Yi Yi,Edward Yang,2000,WinStar,Romance,8.10,97.00,94.00,1206638
+88,The Gleaners & I,Agnès Varda,2001,Zeitgeist,Documentary,7.70,93.00,86.00,159165

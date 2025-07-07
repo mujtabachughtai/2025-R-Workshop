@@ -1,0 +1,16 @@
+# RStudio files
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+
+# Output files
+*.html
+*.pdf
+
+# Quarto and R Markdown asset folders
+*_files/
+RWorkshop_files/
+
+# rsconnect folder (used for publishing)
+rsconnect/
