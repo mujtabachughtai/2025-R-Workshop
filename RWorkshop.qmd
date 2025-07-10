@@ -137,7 +137,7 @@ Let's take a look at the first few rows of the dataset to see the variables we a
 knitr::kable(head(films_data))
 ```
 
-Great! Looks like the "best" movie from the past 25 years was Bong Joon Ho's Parasite. For each move, we have it's ranking from NYT, as well as it's ratings from other sites like Rotten Tomatoes, IMDB, and Metacritic. We also have the amount of money each movie made.
+It looks like the "best" movie from the past 25 years (according to NYT) was Bong Joon Ho's Parasite. For each move, we have it's ranking from NYT, as well as it's ratings from other sites like Rotten Tomatoes, IMDB, and Metacritic. We also have the amount of money each movie made.
 
 Interestingly, the "best" movies from the NYT have lower rankings (i.e., 1, 2), while the best movies from the other rating metrics have high scores (100 or 10.0). Perhaps we should create a new variable where we reverse score the NYT ranking to better match the orders from the other rating metrics. We will use functions from the `tidyverse` package that we loaded in earlier:
 
@@ -162,7 +162,7 @@ films_data_clean <- films_data_clean %>%
 knitr::kable(head(films_data_clean))
 ```
 
-Nice! Now we can start taking a look at our data and comparing different variables within our data frame.
+Now we can start taking a look at our data and comparing different variables within our data frame.
 
 ## Descriptive Statistics and Plots
 
@@ -194,7 +194,7 @@ knitr::kable(
   )
 ```
 
-This is really interesting! Let's recreate the table in descending order (so the genre with the most films on the list is at the top), and let's create a pie chart that shows the number of films from each genre on the list.
+This is much more interesting. Let's recreate the table in descending order (so the genre with the most films on the list is at the top), and let's create a pie chart that shows the number of films from each genre on the list.
 
 ```{r}
 # same as above, but now group in descending order, and we save ordered list
@@ -227,7 +227,7 @@ films_data_clean %>%
   )
 ```
 
-Wonderful! This sort of plot is a professional and simple way to summarize this data, and is a great reference to thinking about the 'best' genre from 2000 to 2025. However, we can dive deeper than just counting the number of films from each genre, as we also have data on the ratings from three sites for each film as well as how much each film made. Let's now take a look at the distributions of those four variables, as knowing the underlying distributions of your variables is important before running statistical tests.
+This sort of plot is a professional and simple way to summarize this data, and is a great reference to thinking about the 'best' genre from 2000 to 2025. However, we can dive deeper than just counting the number of films from each genre, as we also have data on the ratings from three sites for each film as well as how much each film made. Let's now take a look at the distributions of those four variables, as knowing the underlying distributions of your variables is important before running statistical tests.
 
 ### Distributions of Ratings and Earnings Variables
 
@@ -247,7 +247,7 @@ describe(films_data_clean$Metacritic)
 describe(films_data_clean$WorldwideGross)
 ```
 
-Alright, this gave us some important information, but it can often be difficult to understand the underlying distribution of data from just statistics. Let's create density plots for each to get a better idea of what is going on. These will show the concentration of data at different values of our variables.
+This gave us some important information, but it can often be difficult to understand the underlying distribution of data from just statistics. Let's create density plots for each to get a better idea of what is going on. These will show the concentration of data at different values of our variables.
 
 ```{r}
 # Rotten Tomatoes
@@ -293,7 +293,7 @@ films_data_clean %>%
   theme(plot.title = element_text(face = "bold"))
 ```
 
-Great! It looks like the Rotten Tomatoes scores have quite a bit of a negative skew, with a lot of the scores concentrated at around 95. IMDB scores seem to be quite normally distributed, centered around 7.8. Metacritic scores have a slight negative skew, somewhat centered at around 90. Lastly, the worldwide earnings are very positively skewed, and there seems to be quite a range of earnings across films. This makes sense given that, over the past 25 years, the cost of going to the movies has dramatically increased, so some films (like action films from recent years) often reach billions of dollars in revenue, while films from the early 2000s were often only making a few millions of dollars. We should keep this in mind for future analyses.
+It looks like the Rotten Tomatoes scores have quite a bit of a negative skew, with a lot of the scores concentrated at around 95. IMDB scores seem to be quite normally distributed, centered around 7.8. Metacritic scores have a slight negative skew, somewhat centered at around 90. Lastly, the worldwide earnings are very positively skewed, and there seems to be quite a range of earnings across films. This makes sense given that, over the past 25 years, the cost of going to the movies has dramatically increased, so some films (like action films from recent years) often reach billions of dollars in revenue, while films from the early 2000s were often only making a few millions of dollars. We should keep this in mind for future analyses.
 
 Given the nice distribution of IMDB scores, let's use this metric to do one last set of descriptive statistics and plots to try and determine the best director from the past 25 years.
 
@@ -316,7 +316,7 @@ knitr::kable(
   )
 ```
 
-Nice! It looks like Peter Jackson has the highest average IMDB score of any director on this list with an 8.9. However, he only has one film on this list (Lord of the Rings: the Fellowship of the Ring). Would it make sense to crown him the best director of the past 25 years? Maybe. But perhaps we want to calculate the average IMDB scores only for directors who appear on this list a few times. It seems like many of the directors on this list are on here for only one of their films, so why don't we include only those who have at least 2 films on this list:
+It looks like Peter Jackson has the highest average IMDB score of any director on this list with an 8.9. However, he only has one film on this list (Lord of the Rings: the Fellowship of the Ring). Would it make sense to crown him the best director of the past 25 years? Maybe. But perhaps we want to calculate the average IMDB scores only for directors who appear on this list a few times. It seems like many of the directors on this list are on here for only one of their films, so why don't we include only those who have at least 2 films on this list:
 
 ```{r}
 knitr::kable(
@@ -331,7 +331,7 @@ knitr::kable(
   )
 ```
 
-Sweet! Now we have the 13 directors with multiple films on this list, ordered by their average IMDB scores. For fun, why don't we add in the average scores for the other rating metrics and for the earnings of the films. That way we have one concise table to tell us exactly who the "best" director of the past 25 years was:
+Now we have the 13 directors with multiple films on this list, ordered by their average IMDB scores. For fun, why don't we add in the average scores for the other rating metrics and for the earnings of the films. That way we have one concise table to tell us exactly who the "best" director of the past 25 years was:
 
 ```{r}
 knitr::kable(films_data_clean %>%
@@ -348,7 +348,7 @@ knitr::kable(films_data_clean %>%
 )
 ```
 
-Wonderful! From this table of directors that had multiple films on NYT's list, we have a few options of who to crown as the "best" director of the last 25 years. Christopher Nolan has the most films of anyone on the full list with 5, and he also has the highest average IMDB score and the highest average earnings of any director with multiple films on the list. Bong Joon Ho has the highest average Rotten Tomatoes score of any director with multiple films on this list with 97, and Richard Linklater has the highest Metacritic score of any director with multiple films on this list with 95.5. So, I think any of these directors could reasonably be crowned the best director of the past 25 years!
+From this table of directors that had multiple films on NYT's list, we have a few options of who to crown as the "best" director of the last 25 years. Christopher Nolan has the most films of anyone on the full list with 5, and he also has the highest average IMDB score and the highest average earnings of any director with multiple films on the list. Bong Joon Ho has the highest average Rotten Tomatoes score of any director with multiple films on this list with 97, and Richard Linklater has the highest Metacritic score of any director with multiple films on this list with 95.5. So, I think any of these directors could reasonably be crowned the best director of the past 25 years!
 
 Of course, a formal statistical test (such as an ANOVA) would be best to compare the directors on these metrics (inferential statistics like this are the topic of the next section), but given the small number of observations per director, it may not be appropriate for this question. Instead, let's finish this section by plotting the mean and standard deviations for each of the above 13 director's IMDB scores (sorted in descending order, of course).
 
@@ -389,7 +389,7 @@ ggplot(top_directors_IMDB,
 
 ## Inferential Statistics
 
-Great. Now that we have a thorough understanding of the data and some descriptive statistics and plots to help us answer questions about it, we can move towards using formal statistics tests. The first test that comes to mind is to see if films that score well on one metric (such as Rotten Tomatoes score) tend to score well on other metrics (NYT Ranking, IMDB, Metacritic, and earnings). To test this, we will calculate the pairwise correlations between these variables.
+Now that we have a thorough understanding of the data and some descriptive statistics and plots to help us answer questions about it, we can move towards using formal statistics tests. The first test that comes to mind is to see if films that score well on one metric (such as Rotten Tomatoes score) tend to score well on other metrics (NYT Ranking, IMDB, Metacritic, and earnings). To test this, we will calculate the pairwise correlations between these variables.
 
 ### Correlations Between Metrics
 
@@ -411,7 +411,7 @@ ggpairs(
 )
 ```
 
-Wonderful! This is a very informative plot. The numbers in the upper triangle indicate the Pearson's rho value for each pairwise comparison, with a dot after indicating the relationship is marginally significant (p \< 0.10, like the comparison between IMDB and Rotten Tomatoes that we now see again), a star after indicating the relationship is significant at the 0.05 level (the standard level in psychology), and 3 stars after indicating the relationship is significant at the 0.01 level.
+This is a very informative plot. The numbers in the upper triangle indicate the Pearson's rho value for each pairwise comparison, with a dot after indicating the relationship is marginally significant (p \< 0.10, like the comparison between IMDB and Rotten Tomatoes that we now see again), a star after indicating the relationship is significant at the 0.05 level (the standard level in psychology), and 3 stars after indicating the relationship is significant at the 0.01 level.
 
 It looks like the strongest positive relationship is between Rotten Tomatoes and Metacritic scores (perhaps because they are calculated similarly). The other highly significant relationship is between IMDB score and how much money a film makes. Interestingly, the earnings for a film is negatively correlated with the other website ratings, although they do not reach statistical significance. Lastly, there is a significant relationship with IMDB score and NYT Ranking (reversed from earlier), such that higher ranked films on NYT's list tend to have higher IMDB scores. However, given that the NYT ranking is a pure list with exactly one film at each value of 1 to 100, it may not make sense to do a correlation test with that metric. If you take a look at the distribution of the NYT rankings, it looks uniform across the range of values, very different than the distributions of the other variables (which match what we plotted before). Regardless, this plot tells us quite a bit about how the metrics relate to one another!
 
@@ -463,7 +463,7 @@ films_data_clean %>%
   theme(plot.title = element_text(face = "bold"))
 ```
 
-Nice! It looks like there are some differences between genres in the means, but the error bars definitely seem to overlap quite a bit. Let's see if the differences are significant using a linear model. This will compare the mean IMDB scores of each genre to the reference level of "Comedy", since we made that our first level in our data frame based on our summary table.
+It looks like there are some differences between genres in the means, but the error bars definitely seem to overlap quite a bit. Let's see if the differences are significant using a linear model. This will compare the mean IMDB scores of each genre to the reference level of "Comedy", since we made that our first level in our data frame based on our summary table.
 
 ```{r}
 # fit a linear model that predicts IMDB rating by Genre
@@ -471,7 +471,9 @@ IMDB_genre_model <- lm(IMDB ~ Genre, data = films_data_clean)
 summary(IMDB_genre_model)
 ```
 
-Lovely. From this output, we can see that the intercept is 7.57, which is just the mean IMDB score for the reference level of "Comedy" (which we already knew from the summary table). Each estimate refers to the difference between that genre's average IMDB score and the average for "Comedy". The p-values for each estimate indicate if that difference is significant, and it looks like a few are! Specifically, we have evidence that the average IMDB scores for Adventure, Family, Action, and Thriller films are all significantly higher than the average IMDB score for Comedy films. All of the comparisons from the above model are with respect to Comedy. What if we want to see if there are differences between, say, Adventure films and Romance films? We can use post-hoc analyses with the above ANOVA model to check all pairwise comparisons using functions from the `emmeans` package.
+From this output, we can see that the intercept is 7.57, which is just the mean IMDB score for the reference level of "Comedy" (which we already knew from the summary table). Each estimate refers to the difference between that genre's average IMDB score and the average for "Comedy". The p-values for each estimate indicate if that difference is significant, and it looks like a few are! Specifically, we have evidence that the average IMDB scores for Adventure, Family, Action, and Thriller films are all significantly higher than the average IMDB score for Comedy films.
+
+All of the comparisons from the above model are with respect to Comedy. What if we want to see if there are differences between, say, Adventure films and Romance films? We can use post-hoc analyses with the above linear model to check all pairwise comparisons using functions from the `emmeans` package.
 
 ```{r}
 # calculate pairwise comparisons for all genres
@@ -481,13 +483,13 @@ imdb_genre_emm <- emmeans(IMDB_genre_model, ~ Genre)
 pairs(imdb_genre_emm)
 ```
 
-Nice! Now we can see which Genres have significant differences in their average IMDB ratings. The estimates for the contrasts that have the Comedy variable all match our estimates from our original linear model, since Comedy was our reference variable in that model. However, something interesting happens when we look at the "Comedy - Family" contrast from the pairwise comparisons. Despite having the exact same estimate from the original linear model (i.e., the same difference in means), the estimate is significant in the original model but the pairwise comparison is not. This is because post-hoc comparisons have to adjust for the number of comparisons, which R automatically does, so the pairwise comparison is more conservative than the estimate from the original linear model. This is a bit in the weeds, but the difference between models for this comparison should warrant some caution when saying "Family films have higher average IMDB scores than Comedy films".
+Now we can see which Genres have significant differences in their average IMDB ratings. The estimates for the contrasts that have the Comedy variable all match our estimates from our original linear model, since Comedy was our reference variable in that model. However, something interesting happens when we look at the "Comedy - Family" contrast from the pairwise comparisons. Despite having the exact same estimate from the original linear model (i.e., the same difference in means), the estimate is significant in the original model but the pairwise comparison is not. This is because post-hoc comparisons have to adjust for the number of comparisons, which R automatically does, so the pairwise comparison is more conservative than the estimate from the original linear model. This is a bit in the weeds, but the difference between models for this comparison should warrant some caution when saying "Family films have higher average IMDB scores than Comedy films".
 
 The pairwise comparisons also allow us to to see comparisons between genres that aren't "Comedy". The only significant result from the other pairwise comparisons is that "Adventure" films have significantly higher average IMDB scores than "Drama" ones.
 
 ## What Do I Watch, and How Do I Watch It?
 
-Let's end this project by making a plot that can help us decide what movie to watch and the streaming service to watch it on. To do so, let first create a scatterplot with all 100 films, and let's have this plot show the genre, year, and IMDB score for each film. Then, we can have it be interactive so that when you hover over a given point, you see the name of the film and the streaming service it is on. That way, someone could quickly take a look at this plot and get inspiration on what to watch next.
+Let's end this project by making a plot that can help us decide what movie to watch and the streaming service to watch it on. To do so, let create a scatterplot with all 100 films, and let's have this plot show the genre, year, and IMDB score for each film. Then, we can have it be interactive so that when you hover over a given point, you see the name of the film and the streaming service it is on. That way, someone could quickly take a look at this plot and get inspiration on what to watch next.
 
 How do we get the streaming services? The one variable from this dataset that we haven't used is `Studio`, and common film studios often have agreements with certain streaming companies. For example, Universal Studios often puts their films on Peacock, and Warner Bros. often puts their films on Max. Let's use this knowledge to create a new variable with streaming service information based on our current `Studio` variable. We'll do this using a more powerful version of an `if_else` statement called a `case_when`:
 
@@ -552,7 +554,7 @@ ggplotly(p, tooltip = "text") %>%
     )
 ```
 
-Wonderful! Now, if we have a genre or range of years in mind for a film to watch, we can consult this plot and look at the IMDB ratings, titles, and streaming services to choose what to watch next.
+Now, if we have a genre or range of years in mind for a film to watch, we can consult this plot and look at the IMDB ratings, titles, and streaming services to choose what to watch next!
 
 # Summary of Exercises
 
